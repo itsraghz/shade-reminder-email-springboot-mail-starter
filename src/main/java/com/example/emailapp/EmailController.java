@@ -60,28 +60,24 @@ public class EmailController {
     }
 
     private void sendmail() throws Exception {
-        Properties props = emailConfig.getSMTPProperties();
-
-        final String user = emailConfig.getSmtpUser();
-        final String password = emailConfig.getPassword();
         final String mailFrom = emailConfig.getMailFrom();
         final String mailTo = emailConfig.getMailTo();
+        final String mailSubject = emailConfig.getMailSubject();
+        final String mailBody = emailConfig.getMailBody();
+        final String mailContentType = emailConfig.getMailContentType();
 
-        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(user, password);
-            }
-        });
+        Session session = emailConfig.getMailSession();
+
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress(mailFrom, false));
 
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailTo));
-        msg.setSubject("Spring Boot Email");
-        msg.setContent("Spring Boot Email", "text/html");
+        msg.setSubject(mailSubject);
+        msg.setContent(mailBody, mailContentType);
         msg.setSentDate(new Date());
 
         MimeBodyPart messageBodyPart = new MimeBodyPart();
-        messageBodyPart.setContent("Spring Boot Email", "text/html");
+        messageBodyPart.setContent(mailBody, mailContentType);
 
         /*Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(messageBodyPart);

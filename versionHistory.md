@@ -23,3 +23,8 @@
    * Modified the 'smtp.secret' key to 'smtp.code' in the `application.properties` file
      due to the issue -> https://dashboard.gitguardian.com/workspace/95623/incidents/398884
    
+6. V 6.0 - 12Mar2021 Friday
+
+   * Modified the `mail.subject` and `mail.body` and `mail.contentType` etc., to the `application.properties` file
+   * Pushed the required setup for all the 3 APIs in the config file.     
+   * Moved the Mail Session portion from `EmailController` to the `EmailConfig`. 

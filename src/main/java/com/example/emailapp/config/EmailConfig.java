@@ -5,21 +5,17 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 import java.util.Properties;
 
 @Configuration
 @Data
+//@PropertySource(value="classpath:application.properties", name="app.props")
 public class EmailConfig {
 
-    /*private static EmailConfig _emailConfig = null;
-
-    public static EmailConfig getInstance() {
-        if(null==_emailConfig) {
-            _emailConfig = new EmailConfig();
-        }
-
-        return _emailConfig;
-    }*/
+    /*@Autowired
+    Environment env;*/
 
     @Value("${smtp.code}")
     public String smtpPassword;
@@ -47,6 +43,16 @@ public class EmailConfig {
 
     @Value("${mail.cc}")
     private String mailCc;
+
+    @Value("${mail.subject}")
+    private String mailSubject;
+
+    @Value("${mail.body}")
+    private String mailBody;
+
+    @Value("${mail.contentType}")
+    private String mailContentType;
+
 
     public String getPassword() throws Exception {
         String password = null;
@@ -88,5 +94,44 @@ public class EmailConfig {
         System.out.println("Properties :: " + props);
         System.out.println(" <<<< getSMTPProperties() - EXIT");
         return props;
+    }
+
+    public Session getMailSession() throws Exception {
+        Properties props = getSMTPProperties();
+
+        final String user = getSmtpUser();
+        final String password = getPassword();
+
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(user, password);
+            }
+        });
+
+        return session;
+    }
+
+    public void printAllEnvVars() {
+        System.out.println(" >>>>> printAllEnvVars() - ENTER");
+        System.getenv().forEach((k, v) -> {
+            System.out.println(k + ":" + v);
+        });
+        System.out.println("-----------------------");
+
+        /*AbstractEnvironment ae = (AbstractEnvironment) env;
+        org.springframework.core.env.PropertySource source =
+                ae.getPropertySources().get("app.props");
+        Properties props = (Properties)source.getSource();
+
+        for(Object key : props.keySet()){
+            System.out.println(props.get(key));
+        }
+        System.out.println("-----------------------");*/
+
+        System.out.println(" <<<<< printAllEnvVars() - EXIT");
+    }
+
+     {
+        printAllEnvVars();
     }
 }
