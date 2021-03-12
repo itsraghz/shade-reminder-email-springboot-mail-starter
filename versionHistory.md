@@ -19,3 +19,7 @@
       due to the issue -> `SMTP credentials exposed on GitHub`
    * Used the `mail.from` and `mail.to` properties from the config file     
     
+5. V5.0 - 12Mar2021 Friday
+   * Modified the 'smtp.secret' key to 'smtp.code' in the `application.properties` file
+     due to the issue -> https://dashboard.gitguardian.com/workspace/95623/incidents/398884
+   
