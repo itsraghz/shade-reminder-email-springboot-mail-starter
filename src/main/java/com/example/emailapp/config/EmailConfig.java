@@ -21,7 +21,7 @@ public class EmailConfig {
         return _emailConfig;
     }*/
 
-    @Value("${smtp.secret}")
+    @Value("${smtp.code}")
     public String smtpPassword;
 
     @Value("${mail.smtp.auth}")
