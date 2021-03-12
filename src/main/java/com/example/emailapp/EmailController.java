@@ -1,6 +1,7 @@
 package com.example.emailapp;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.example.emailapp.config.EmailConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,46 +18,13 @@ import java.util.Properties;
 @RestController
 public class EmailController {
 
-    @Value("${smtp.password}")
-    private String smtpPassword;
-
-    public boolean isValid(String data) {
-        return null!=data && data.trim().length()>0;
-    }
-
-    private String getPassword() throws Exception {
-        String password = null;
-
-        //1. Check for the Env property
-        if(isValid(smtpPassword)) {
-            System.out.println("Env variable smtpPassword is set :: [" + smtpPassword + "]");
-            return smtpPassword;
-        }
-
-        password = isValid(smtpPassword) ? smtpPassword :  "";
-
-        //2. check for the System Property
-        password = System.getProperty("GmailPassword");
-        System.out.println("Gmail Password :: " + password);
-
-        String gmailPasswordEnv = System.getenv("GmailPassword");
-        System.out.println("gmailPasswordEnv Password :: " + gmailPasswordEnv);
-
-        if(null==password || password.trim().length()<=0) {
-            password = gmailPasswordEnv;
-        }
-
-        if(null==password || password.trim().length()<=0) {
-            throw new RuntimeException("Invalid Password. Kindly check and specify a valid password on the Env Property to Java Executable");
-        }
-
-        return password;
-    }
+    @Autowired
+    private EmailConfig emailConfig;
 
     @RequestMapping(value = "/sendEmail")
     public String sendEmail()  {
         System.out.println("Request received for /sendEmail");
-        System.out.println("SMTP Password is :: " + smtpPassword);
+        System.out.println("SMTP Password is :: " + emailConfig.getSmtpPassword());
 
         try {
             sendmail();
@@ -92,13 +60,9 @@ public class EmailController {
     }
 
     private void sendmail() throws Exception {
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+        Properties props = emailConfig.getSMTPProperties();
 
-        final String password = getPassword();
+        final String password = emailConfig.getPassword();
 
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -126,14 +90,12 @@ public class EmailController {
         Transport.send(msg);
     }
 
-    private void sendShadeTestEmail() throws Exception {
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
 
-        final String password = getPassword();
+
+    private void sendShadeTestEmail() throws Exception {
+        Properties props = emailConfig.getSMTPProperties();
+
+        final String password = emailConfig.getPassword();
 
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -180,13 +142,9 @@ public class EmailController {
     }
 
     private void sendShadeReminderEmail() throws Exception {
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+        Properties props = emailConfig.getSMTPProperties();
 
-        final String password = getPassword();
+        final String password = emailConfig.getPassword();
 
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
