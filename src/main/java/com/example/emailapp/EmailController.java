@@ -62,17 +62,20 @@ public class EmailController {
     private void sendmail() throws Exception {
         Properties props = emailConfig.getSMTPProperties();
 
+        final String user = emailConfig.getSmtpUser();
         final String password = emailConfig.getPassword();
+        final String mailFrom = emailConfig.getMailFrom();
+        final String mailTo = emailConfig.getMailTo();
 
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("raghavan.shade@gmail.com", password);
+                return new PasswordAuthentication(user, password);
             }
         });
         Message msg = new MimeMessage(session);
-        msg.setFrom(new InternetAddress("raghavan.shade@gmail.com", false));
+        msg.setFrom(new InternetAddress(mailFrom, false));
 
-        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("raghavan.muthu@outlook.com"));
+        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailTo));
         msg.setSubject("Spring Boot Email");
         msg.setContent("Spring Boot Email", "text/html");
         msg.setSentDate(new Date());

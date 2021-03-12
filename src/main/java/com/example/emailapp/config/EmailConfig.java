@@ -21,7 +21,7 @@ public class EmailConfig {
         return _emailConfig;
     }*/
 
-    @Value("${smtp.password}")
+    @Value("${smtp.secret}")
     public String smtpPassword;
 
     @Value("${mail.smtp.auth}")
@@ -35,6 +35,18 @@ public class EmailConfig {
 
     @Value("${mail.smtp.port}")
     private String mailSmtpPort;
+
+    @Value("${smtp.user}")
+    private String smtpUser;
+
+    @Value("${mail.from}")
+    private String mailFrom;
+
+    @Value("${mail.to}")
+    private String mailTo;
+
+    @Value("${mail.cc}")
+    private String mailCc;
 
     public String getPassword() throws Exception {
         String password = null;

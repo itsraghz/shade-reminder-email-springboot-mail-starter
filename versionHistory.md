@@ -13,4 +13,9 @@
    * SMTP config moved to `application.resources` properties file
    * Added `EmailConfig.java`, `StringUtil.java` files
    
+4. V4.0 - 12 Mar 2021, Friday
+
+   * Modified the 'smtp.password' key to 'smtp.secret' in the `application.properties` file
+      due to the issue -> `SMTP credentials exposed on GitHub`
+   * Used the `mail.from` and `mail.to` properties from the config file     
     
