@@ -1,4 +1,4 @@
-package com.example.emailapp;
+package com.example.emailapp.web;
 
 import com.example.emailapp.config.EmailConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +16,14 @@ import java.util.Date;
 import java.util.Properties;
 
 @RestController
-public class EmailController {
+@RequestMapping("/api")
+public class EmailRESTController {
 
     @Autowired
     private EmailConfig emailConfig;
 
     @RequestMapping(value = "/sendEmail")
-    public String sendEmail()  {
+    public String sendEmail() {
         System.out.println("Request received for /sendEmail");
         System.out.println("SMTP Password is :: " + emailConfig.getSmtpPassword());
 
@@ -32,7 +33,7 @@ public class EmailController {
             e.printStackTrace();
             return "(sendEmail) Exception occurred with the message [" + e.getMessage() + "]";
         }
-        return "Email sent successfully";
+        return "Email sent successfully at " + new Date();
     }
 
     @RequestMapping(value = "/sendShadeTestEmail")
@@ -48,7 +49,7 @@ public class EmailController {
     }
 
     @RequestMapping(value = "/sendShadeReminderEmail")
-    public String sendShadeReminder()  {
+    public String sendShadeReminder() {
         System.out.println("Request received for /sendShadeReminderEmail");
         try {
             sendShadeReminderEmail();
@@ -74,21 +75,17 @@ public class EmailController {
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailTo));
         msg.setSubject(mailSubject);
         msg.setContent(mailBody, mailContentType);
+        System.out.println("Message Content : ");
+        System.out.println("==================");
+        System.out.println(mailBody);
+        System.out.println("------------------");
         msg.setSentDate(new Date());
 
         MimeBodyPart messageBodyPart = new MimeBodyPart();
         messageBodyPart.setContent(mailBody, mailContentType);
 
-        /*Multipart multipart = new MimeMultipart();
-        multipart.addBodyPart(messageBodyPart);
-        MimeBodyPart attachPart = new MimeBodyPart();
-
-        attachPart.attachFile("/var/tmp/image19.png");
-        multipart.addBodyPart(attachPart);
-        msg.setContent(multipart);*/
         Transport.send(msg);
     }
-
 
 
     private void sendShadeTestEmail() throws Exception {
@@ -97,6 +94,7 @@ public class EmailController {
         final String password = emailConfig.getPassword();
 
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication("raghavan.shade@gmail.com", password);
             }
@@ -104,38 +102,23 @@ public class EmailController {
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress("Raghavan_Shade <raghavan@shade.org.in>", false));
 
-        /*msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("S_H_A_D_E <s_h_a_d_e@googlegroups.com>"));
-        msg.setRecipients(Message.RecipientType.CC, InternetAddress.parse("S_H_A_D_E_Volunteers <s_h_a_d_e-volunteers@googlegroups.com>," +
-                "SHaDE Team <shadedotteam@gmail.com>," +
-                "SHaDE-Admin <shade-admin@googlegroups.com>"));*/
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("raghavan.muthu@outlook.com"));
         msg.setSubject("SHaDE | Email Automation - Test Mail");
         String mailContent = " " +
-        "<font name=\"Georgia\">" +
-        "Dear Friends, <br/>" +
-        "<br/>" +
-        "This is a test email for the automation of reminders. Kindly ignore." +
-        "<br/><br/>" +
-        "       Cheers,<br/>" +
-        "       Raghavan alias Saravanan M. <br/>" +
-        "       <a href=\"shade.org.in\">SHaDE Website</a> | <a href=\"4theparents.org\">Tribute to Parents</a> | <a href=\"shade.org.in/forum/\">SHaDE Forum</a><br/>"+
-        " <br/>" +
-        "</font>" +
-        "\"<font color=teal><b>You plan your future by seeing the present but GOD plans your present by seeing the future.</b></font>\" - Wise men";
+                "<font name=\"Georgia\">" +
+                "Dear Friends, <br/>" +
+                "<br/>" +
+                "This is a test email for the automation of reminders. Kindly ignore." +
+                "<br/><br/>" +
+                "       Cheers,<br/>" +
+                "       Raghavan alias Saravanan M. <br/>" +
+                "       <a href=\"shade.org.in\">SHaDE Website</a> | <a href=\"4theparents.org\">Tribute to Parents</a> | <a href=\"shade.org.in/forum/\">SHaDE Forum</a><br/>" +
+                " <br/>" +
+                "</font>" +
+                "\"<font color=teal><b>You plan your future by seeing the present but GOD plans your present by seeing the future.</b></font>\" - Wise men";
 
         msg.setContent(mailContent, "text/html");
         msg.setSentDate(new Date());
-
-        /*MimeBodyPart messageBodyPart = new MimeBodyPart();
-        messageBodyPart.setContent("Spring Boot Email", "text/html");
-
-        Multipart multipart = new MimeMultipart();
-        multipart.addBodyPart(messageBodyPart);
-        MimeBodyPart attachPart = new MimeBodyPart();
-
-        attachPart.attachFile("/var/tmp/image19.png");
-        multipart.addBodyPart(attachPart);
-        msg.setContent(multipart);*/
 
         Transport.send(msg);
     }
@@ -146,6 +129,7 @@ public class EmailController {
         final String password = emailConfig.getPassword();
 
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication("raghavan.shade@gmail.com", password);
             }
@@ -167,7 +151,7 @@ public class EmailController {
                 "<br/><br/>" +
                 "       Cheers,<br/>" +
                 "       Raghavan alias Saravanan M. <br/>" +
-                "       <a href=\"shade.org.in\">SHaDE Website</a> | <a href=\"4theparents.org\">Tribute to Parents</a> | <a href=\"shade.org.in/forum/\">SHaDE Forum</a><br/>"+
+                "       <a href=\"shade.org.in\">SHaDE Website</a> | <a href=\"4theparents.org\">Tribute to Parents</a> | <a href=\"shade.org.in/forum/\">SHaDE Forum</a><br/>" +
                 " <br/>" +
                 "</font>" +
                 "\"<font color=teal><b>You plan your future by seeing the present but GOD plans your present by seeing the future.</b></font>\" - Wise men";

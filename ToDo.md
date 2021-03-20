@@ -13,3 +13,5 @@
 
 1. Verify the emails sent via IMAP Protocol using JavaMail API - Unit Testing
 2. Add Logging instead of SOP
+3. Validate the emails sent if any previously
+4. Validate the contents and email attributes before sending

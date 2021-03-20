@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Email API Index</title>
+</head>
+<body>
+    <b>Ṁessage from Server: </b><p th:text="${message}"/>
+    <table>
+        <tr>
+            <th>API</th>
+            <th>Description</th>
+            <th>Remarks</th>
+        </tr>
+        <tr th:each="emailAPIBO: ${emailAPIBOList}">
+            <td th:text="${emailAPIBO.url}">URL</td>
+            <td th:text="${emailAPIBO.description}">Description</td>
+            <td th:text="${emailAPIBO.remarks}">Remarks</td>
+        </tr>
+    </table>
+</body>
+</html>
