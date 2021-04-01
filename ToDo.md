@@ -8,7 +8,10 @@
 2. Add the placeholder for YYYY-MMM in the Shade Reminder Email.   
 3. Bring some dynamism on the test emails  with a placeholder for a random number or YYYYMMDDHHMMSS or 
    something similar - in the Email Subject and/or Body.
-   
+4. Automatically send the first/initial email if needed, and then the subsequent ones will be for the reminders
+5. Can save the output somewhere for logging (report with the full HTML file as well)
+6. Can have a flag marked in a tracker file for the reference for each email.
+
 ## Nice to have
 
 1. Verify the emails sent via IMAP Protocol using JavaMail API - Unit Testing
