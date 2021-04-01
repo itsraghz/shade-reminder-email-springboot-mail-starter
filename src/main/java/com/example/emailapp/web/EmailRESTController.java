@@ -63,6 +63,7 @@ public class EmailRESTController {
     private void sendmail() throws Exception {
         final String mailFrom = emailConfig.getMailFrom();
         final String mailTo = emailConfig.getMailTo();
+        final String mailCc = emailConfig.getMailCc();
         final String mailSubject = emailConfig.getMailSubject();
         final String mailBody = emailConfig.getMailBody();
         final String mailContentType = emailConfig.getMailContentType();
@@ -73,8 +74,13 @@ public class EmailRESTController {
         msg.setFrom(new InternetAddress(mailFrom, false));
 
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailTo));
+        msg.setRecipients(Message.RecipientType.CC, InternetAddress.parse(mailCc));
         msg.setSubject(mailSubject);
         msg.setContent(mailBody, mailContentType);
+        System.out.println("Message Attributes : ");
+        System.out.println("==================");
+        System.out.println(emailConfig);
+        System.out.println("------------------");
         System.out.println("Message Content : ");
         System.out.println("==================");
         System.out.println(mailBody);
