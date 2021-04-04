@@ -12,7 +12,7 @@
 5. Can save the output somewhere for logging (report with the full HTML file as well)
 6. Can have a flag marked in a tracker file for the reference for each email.
 7. Add a placeholder for the MMM YYYY in the body of the email (April 2021)
-8. (*) FIXED - Bug - `mail.to` is not reflecting!
+8. (*) FIXED - Bug - `mail.cc` is not reflecting!
 9. Add a PS (PostScript) in the config file and provision it with a visual highlighted text in the email body
 10. Facility to add a BCc recipient
 11. Make a Web Application if possible to have a different templates - for the reminders, and any adhoc emails.
