@@ -65,7 +65,8 @@ public class JavaEmail
         //String fromUser = "user-email@gmail.com";
         String fromUser = "raghavan.shade@gmail.com";
         //String fromUserEmailPassword = "*******";
-        String fromUserEmailPassword = "nQ8tT9jL";
+        //https://dashboard.gitguardian.com/workspace/95623/incidents/1292171
+        String fromUserEmailPassword = "PutYourPassword";
 
         String emailHost = "smtp.gmail.com";
         Transport transport = mailSession.getTransport("smtp");
