@@ -60,10 +60,10 @@ public class EmailConfig {
         //1. Check for the Env property
         if(StringUtil.isValid(smtpPassword)) {
             System.out.println("Env variable smtpPassword is set :: [" + smtpPassword + "]");
-            return smtpPassword;
+            //return smtpPassword;
         }
 
-        password = StringUtil.isValid(smtpPassword) ? smtpPassword :  "";
+        //password = StringUtil.isValid(smtpPassword) ? smtpPassword :  "";
 
         //2. check for the System Property
         password = System.getProperty("GmailPassword");
@@ -89,7 +89,7 @@ public class EmailConfig {
         props.put("mail.smtp.auth", mailSmtpAuth);
         props.put("mail.smtp.starttls.enable", mailSmtpStartTlsEnable);
         props.put("mail.smtp.host", mailSmtpHost);
-        props.put("mail.smtp.port", mailSmtpAuth);
+        props.put("mail.smtp.port", mailSmtpPort);
 
         System.out.println("Properties :: " + props);
         System.out.println(" <<<< getSMTPProperties() - EXIT");
@@ -114,7 +114,10 @@ public class EmailConfig {
     public void printAllEnvVars() {
         System.out.println(" >>>>> printAllEnvVars() - ENTER");
         System.getenv().forEach((k, v) -> {
-            System.out.println(k + ":" + v);
+            if(v.contains("Password")) {
+                System.out.println("....... [*][*] " + k + " : " + v);
+            } else
+                System.out.println(k + ":" + v);
         });
         System.out.println("-----------------------");
 
